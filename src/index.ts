@@ -14,7 +14,7 @@ import { createPrompt } from "./helpers/prompt";
 import { validateInstagramProfile } from "./validation/roast";
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -134,10 +134,10 @@ app.post("/roast", async (req: Request, res: Response) => {
         profileData
     } = req.body;
 
-    if(!profileData) return res.status(400).json({
+    if (!profileData) return res.status(400).json({
         error: 'profile data is required'
     });
-    
+
     try {
 
         const isValid = validateInstagramProfile(profileData)
@@ -147,12 +147,12 @@ app.post("/roast", async (req: Request, res: Response) => {
                 error: 'profile is not valid'
             });
         }
-        
+
         const prompt = createPrompt(profileData)
         const result = await model.generateContent([prompt]);
         res.status(200).json({
             data: {
-                roastedMessage:result.response.text()
+                roastedMessage: result.response.text()
             },
         });
     } catch (error) {
